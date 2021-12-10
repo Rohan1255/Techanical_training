@@ -24,24 +24,24 @@ public class UserController {
 	private IAdminService adservice;
 
 	@GetMapping("/homepage")
-	public String showHomepage(HttpServletRequest req) {
-		String role = (String) req.getSession().getAttribute("role");
+	public String showHomepage(HttpSession ses) {
+		String role = (String) ses.getAttribute("role");
 		if (!role.equals("user"))
 			throw new RuntimeException();
 		return "/userpages/userhomepage";
 	}
 
 	@GetMapping("/feedback")
-	public String login(FeedbackDto feedback, HttpServletRequest req) {
-		String role = (String) req.getSession().getAttribute("role");
+	public String login(FeedbackDto feedback, HttpSession ses) {
+		String role = (String) ses.getAttribute("role");
 		if (!role.equals("user"))
 			throw new RuntimeException();
 		return "/userpages/givefeedback";
 	}
 
 	@PostMapping("/feedback")
-	public String giveFeedback(FeedbackDto feedback, Model map, HttpServletRequest req) {
-		String role = (String) req.getSession().getAttribute("role");
+	public String giveFeedback(FeedbackDto feedback, Model map, HttpSession ses) {
+		String role = (String) ses.getAttribute("role");
 		if (!role.equals("user"))
 			throw new RuntimeException();
 		map.addAttribute("msg", userService.giveFeedBack(feedback));
@@ -55,8 +55,8 @@ public class UserController {
 	}
 
 	@GetMapping("/enroll")
-	public String erollmentForm(Model map, HttpServletRequest req) {
-		String role = (String) req.getSession().getAttribute("role");
+	public String erollmentForm(Model map, HttpSession ses) {
+		String role = (String) ses.getAttribute("role");
 		if (!role.equals("user"))
 			throw new RuntimeException();
 		map.addAttribute("list", adservice.showAllCourse());
@@ -64,9 +64,8 @@ public class UserController {
 	}
 
 	@GetMapping("/enrollcourse")
-	public String enroll(@RequestParam String cid, HttpServletRequest req, Model map) {
+	public String enroll(@RequestParam String cid, HttpSession session, Model map) {
 		System.out.println("in enroll");
-		HttpSession session = req.getSession();
 		Integer userid = (Integer) session.getAttribute("userid");
 		map.addAttribute("msg", userService.enroll(userid, Integer.parseInt(cid)));
 		return "/userpages/userhomepage";

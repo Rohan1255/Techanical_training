@@ -1,9 +1,16 @@
 package com.app.service;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dao.CourseRepo;
 import com.app.dao.FeedbackRepo;
@@ -68,11 +75,32 @@ public class UserService implements IUserService {
 			System.out.println("duplicate");
 			return null;
 		}
-
+		String fileName = user.getPhoto().getOriginalFilename();
 		User u = new User(user.getUserId(), user.getName(), user.getAddress(), user.getPhone(), user.getEmail(),
-				user.getPassword(), LocalDate.now());
+				user.getPassword(), LocalDate.now(),fileName);
 		userRepo.save(u);
+		String uploadDir = "user-photos/" + u.getUserId();
+		try {
+			saveFile(uploadDir, fileName, user.getPhoto());
+		}catch (Exception e) {
+			System.out.println("failed to save file");
+		}
 		return u;
 	}
-
+	
+	public static void saveFile(String uploadDir, String fileName,
+            MultipartFile multipartFile) throws IOException {
+        Path uploadPath = Paths.get(uploadDir);
+         
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+         
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ioe) {        
+            throw new IOException("Could not save image file: " + fileName, ioe);
+        }      
+    }
 }

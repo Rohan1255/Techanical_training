@@ -74,6 +74,10 @@ h4 {
 				<td><form:input path="address" /></td>
 			</tr>
 			<tr>
+				<td>Upload photo</td>
+				<td><form:input type="file" path="photo"/></td>
+			</tr>
+			<tr>
 				<td colspan="2" style="text-align: center"><input type="submit"
 					value="Register" id="btn" /></td>
 			</tr>

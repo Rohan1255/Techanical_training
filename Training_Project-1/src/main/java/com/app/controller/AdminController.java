@@ -40,7 +40,7 @@ public class AdminController {
 		if(!role.equals("admin"))
 			throw new RuntimeException();
 		map.addAttribute("msg",adservice.addCourse(c));
-		return "/addcourse";
+		return "/adminpages/addcourse";
 	}
 
 	@GetMapping("/feedback")

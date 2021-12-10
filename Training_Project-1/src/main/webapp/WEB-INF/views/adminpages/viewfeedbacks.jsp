@@ -37,7 +37,8 @@ table {
 	<hr>
 	<table>
 		<tr>
-			<td>ID</td>
+			<td>FEEDBACK ID</td>
+			<td>USER ID</td>
 			<td>NAME</td>
 			<td>EMAIL</td>
 			<td>FEEDBACK</td>
@@ -45,6 +46,7 @@ table {
 		<c:forEach var="fd" items="${requestScope.list}">
 			<tr>
 				<td class="content">${fd.id}</td>
+				<td class="content">${fd.user.userId}</td>
 				<td class="content">${fd.name}</td>
 				<td class="content">${fd.email}</td>
 				<td class="content">${fd.feedback}</td>

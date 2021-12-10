@@ -13,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "user1")
-public class User{
+public class User {
 	@Id
 	private int userId;
 	@Column(length = 100)
@@ -29,21 +29,25 @@ public class User{
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate regDate;
 	@ManyToOne
-	@JoinColumn(name="course_id")
+	@JoinColumn(name = "course_id")
 	private Course course;
+	private String photo;
+
 	public User() {
 
 	}
 
-	public User(int userId, String name, String address, String phone, String email, String password, LocalDate regDate) {
+	public User(int userId, String name, String address, String phone, String email, String password, LocalDate regDate,
+			String photo) {
 		super();
 		this.userId = userId;
 		this.name = name;
 		this.address = address;
 		this.phone = phone;
-		this.Email = email;
+		Email = email;
 		this.password = password;
 		this.regDate = regDate;
+		this.photo = photo;
 	}
 
 	public int getUserId() {
@@ -109,6 +113,13 @@ public class User{
 	public void setCourse(Course course) {
 		this.course = course;
 	}
-	
-	
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+
 }

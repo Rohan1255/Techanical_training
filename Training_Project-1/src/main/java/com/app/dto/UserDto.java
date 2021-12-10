@@ -1,21 +1,28 @@
 package com.app.dto;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class UserDto {
-	@NotNull
 	private int userId;
 	private String name;
 	private String email;
 	private String password;
 	private String phone;
 	private String address;
-
+	private MultipartFile photo;
+	
 	public UserDto() {
 
 	}
 
-	public UserDto(int userId, String name, String email, String password, String phone, String address) {
+	
+
+	public UserDto(@NotNull int userId, String name, String email, String password, String phone, String address,
+			String photo) {
+		super();
 		this.userId = userId;
 		this.name = name;
 		this.email = email;
@@ -23,6 +30,8 @@ public class UserDto {
 		this.phone = phone;
 		this.address = address;
 	}
+
+
 
 	public int getUserId() {
 		return userId;
@@ -70,6 +79,14 @@ public class UserDto {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public MultipartFile getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(MultipartFile photo) {
+		this.photo = photo;
 	}
 
 }
