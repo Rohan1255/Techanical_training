@@ -1,6 +1,7 @@
 package com.app.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.app.dto.LoginRequest;
+import com.app.dto.UserDto;
 import com.app.pojos.User;
 import com.app.service.IAdminService;
 import com.app.service.IUserService;
@@ -41,6 +43,22 @@ public class HomePageController {
 			return "/userlogin";
 	}
 
+	@GetMapping("/register")
+	public String registerUser( UserDto u) {
+		return "/registrationpage";
+	}
+	
+	@PostMapping("/register")
+	public String registation(@Valid UserDto user,Model map){
+		User u = userService.registerUser(user);
+		if(u==null) {
+			map.addAttribute("msg","user id already taken");
+			return "/registrationpage";
+		}
+		map.addAttribute("msg","registration succesfull");
+		return "/index";
+	}
+	
 	@PostMapping("/login")
 	public String login(@RequestParam String role, LoginRequest req, Model map,HttpServletRequest re) {
 		if (role.equals("user")) {

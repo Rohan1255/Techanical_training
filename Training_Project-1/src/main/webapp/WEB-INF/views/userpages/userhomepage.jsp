@@ -8,15 +8,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-		<%
-	try {
-		if ((session.getAttribute("username") == null || session.getAttribute("role") == null) || !session.getAttribute("role").equals("user")) {
-			response.sendRedirect("/");
-		}
-	} catch (Exception e) {
-		response.sendRedirect("/");
-	}
-	%>
 	<h3 style="color: blue">Hello, ${sessionScope.username}</h3>
 	<h3 align="right"><a href='<spring:url value="logout"></spring:url>'>logout</a></h3>
 	<hr>

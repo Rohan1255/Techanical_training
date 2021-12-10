@@ -19,25 +19,37 @@ public class AdminController {
 	private IAdminService adservice;
 
 	@GetMapping("/homepage")
-	public String showHomepage() {
-		return "/adminhomepage";
+	public String showHomepage(HttpServletRequest req) {
+			String role =(String) req.getSession().getAttribute("role");
+			if(!role.equals("admin"))
+				throw new RuntimeException();
+			return "/adminpages/adminhomepage";
 	}
 	
 	@GetMapping("/addcourse")
-	public String addcourseform(Course c) {
-		return "/addcourse";
+	public String addcourseform(Course c,HttpServletRequest req) {
+		String role =(String) req.getSession().getAttribute("role");
+		if(!role.equals("admin"))
+			throw new RuntimeException();
+		return "/adminpages/addcourse";
 	}
 	
 	@PostMapping("/addcourse")
-	public String addcourse(Course c,Model map) {
+	public String addcourse(Course c,Model map,HttpServletRequest req) {
+		String role =(String) req.getSession().getAttribute("role");
+		if(!role.equals("admin"))
+			throw new RuntimeException();
 		map.addAttribute("msg",adservice.addCourse(c));
 		return "/addcourse";
 	}
 
 	@GetMapping("/feedback")
-	public String viewFeedback(Model map) {
+	public String viewFeedback(Model map,HttpServletRequest req) {
+		String role =(String) req.getSession().getAttribute("role");
+		if(!role.equals("admin"))
+			throw new RuntimeException();
 		map.addAttribute("list", adservice.viewFeddbacks());
-		return "/viewfeedbacks";
+		return "/adminpages/viewfeedbacks";
 	}
 
 	@GetMapping("/logout")
@@ -47,8 +59,11 @@ public class AdminController {
 	}
 	
 	@GetMapping("/allcourses")
-	public String showAllCourses(Model map) {
+	public String showAllCourses(Model map,HttpServletRequest req) {
+		String role =(String) req.getSession().getAttribute("role");
+		if(!role.equals("admin"))
+			throw new RuntimeException();
 		map.addAttribute("list",adservice.showAllCourse());
-		return "/showallcourse";
+		return "/adminpages/showallcourse";
 	}
 }

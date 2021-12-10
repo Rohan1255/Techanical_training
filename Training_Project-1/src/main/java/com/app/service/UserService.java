@@ -1,5 +1,7 @@
 package com.app.service;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +10,7 @@ import com.app.dao.FeedbackRepo;
 import com.app.dao.UserRepo;
 import com.app.dto.FeedbackDto;
 import com.app.dto.LoginRequest;
+import com.app.dto.UserDto;
 import com.app.pojos.Course;
 import com.app.pojos.Feedback;
 import com.app.pojos.User;
@@ -57,6 +60,19 @@ public class UserService implements IUserService {
 			return "Enrollmenrt failed";
 		}
 
+	}
+
+	@Override
+	public User registerUser(UserDto user) {
+		if (userRepo.existsById(user.getUserId())) {
+			System.out.println("duplicate");
+			return null;
+		}
+
+		User u = new User(user.getUserId(), user.getName(), user.getAddress(), user.getPhone(), user.getEmail(),
+				user.getPassword(), LocalDate.now());
+		userRepo.save(u);
+		return u;
 	}
 
 }
