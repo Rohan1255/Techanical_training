@@ -1,6 +1,7 @@
 package com.app.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,24 +20,24 @@ public class AdminController {
 	private IAdminService adservice;
 
 	@GetMapping("/homepage")
-	public String showHomepage(HttpServletRequest req) {
-			String role =(String) req.getSession().getAttribute("role");
+	public String showHomepage(HttpSession ses) {
+			String role =(String)ses.getAttribute("role");
 			if(!role.equals("admin"))
 				throw new RuntimeException();
 			return "/adminpages/adminhomepage";
 	}
 	
 	@GetMapping("/addcourse")
-	public String addcourseform(Course c,HttpServletRequest req) {
-		String role =(String) req.getSession().getAttribute("role");
+	public String addcourseform(Course c,HttpSession ses) {
+		String role =(String) ses.getAttribute("role");
 		if(!role.equals("admin"))
 			throw new RuntimeException();
 		return "/adminpages/addcourse";
 	}
 	
 	@PostMapping("/addcourse")
-	public String addcourse(Course c,Model map,HttpServletRequest req) {
-		String role =(String) req.getSession().getAttribute("role");
+	public String addcourse(Course c,Model map,HttpSession ses) {
+		String role =(String) ses.getAttribute("role");
 		if(!role.equals("admin"))
 			throw new RuntimeException();
 		map.addAttribute("msg",adservice.addCourse(c));
@@ -44,8 +45,8 @@ public class AdminController {
 	}
 
 	@GetMapping("/feedback")
-	public String viewFeedback(Model map,HttpServletRequest req) {
-		String role =(String) req.getSession().getAttribute("role");
+	public String viewFeedback(Model map,HttpSession ses) {
+		String role =(String) ses.getAttribute("role");
 		if(!role.equals("admin"))
 			throw new RuntimeException();
 		map.addAttribute("list", adservice.viewFeddbacks());
@@ -59,8 +60,8 @@ public class AdminController {
 	}
 	
 	@GetMapping("/allcourses")
-	public String showAllCourses(Model map,HttpServletRequest req) {
-		String role =(String) req.getSession().getAttribute("role");
+	public String showAllCourses(Model map,HttpSession ses) {
+		String role =(String) ses.getAttribute("role");
 		if(!role.equals("admin"))
 			throw new RuntimeException();
 		map.addAttribute("list",adservice.showAllCourse());
